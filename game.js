@@ -1,9 +1,7 @@
 'use strict';
 // Symbolic notation: these functions format progression rather than evaluate hyperoperations.
 const MAX = Number.MAX_SAFE_INTEGER, RATE = 250, KEY = 'layermeta';
-let a = 0, speedLevel = 0, running = false, stage = '', last = performance.now();
-const speed = () => 1 + speedLevel;
-const nextLayerRequirement = () => speedLevel + 2;
+let a = 0, layerPoints = 0, running = false, stage = '', last = performance.now();
 const clamp = n => Number.isFinite(n) ? Math.min(MAX, Math.max(0,n)) : MAX;
 const GREEK = 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
 function Letter(n) { return n < 0 ? '' : (n < 26 ? '' : Letter(Math.floor(n/26)-1)) + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[n%26]; }
@@ -48,29 +46,16 @@ function displayedLayerValue(n){
  }
  return MAX;
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify({version:2,a,speedLevel,running}));}catch{document.getElementById('notice').textContent='Browser saving is unavailable. Export a backup.';}}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(typeof s==='number'&&Number.isFinite(s)&&s>=0)a=clamp(s);else if(s&&Number.isFinite(s.a)&&s.a>=0){a=clamp(s.a);speedLevel=Number.isFinite(s.speedLevel)&&s.speedLevel>=0?Math.floor(s.speedLevel):0;running=s.running===true;}}catch{}}
-function advance(now){const dt=Math.min(Math.max((now-last)/1000,0),1);last=now;if(running)a=clamp(a+dt*RATE*speed());}
+function prestigeGain(layer){if(layer<10)return 0;const exponent=Math.min(layer-10,Math.floor(Math.log(MAX)/Math.log(1.1)));return Math.min(MAX,1.1**exponent);}
+function formatPoints(points){return points.toLocaleString('en-US',{maximumFractionDigits:3});}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({version:3,a,layerPoints,running}));}catch{document.getElementById('notice').textContent='Browser saving is unavailable. Export a backup.';}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(typeof s==='number'&&Number.isFinite(s)&&s>=0)a=clamp(s);else if(s&&Number.isFinite(s.a)&&s.a>=0){a=clamp(s.a);layerPoints=Number.isFinite(s.layerPoints)&&s.layerPoints>=0?clamp(s.layerPoints):0;running=s.running===true;}}catch{}}
+function buyLayerPrestige(){advance(performance.now());const layer=displayedLayerValue(a),gain=prestigeGain(layer);if(!gain)return;layerPoints=clamp(layerPoints+gain);a=0;running=false;last=performance.now();render();save();document.getElementById('notice').textContent='Layer Prestige complete: +'+formatPoints(gain)+' Layer Points.';}
+function resetData(){localStorage.removeItem(KEY);a=0;layerPoints=0;running=false;stage='';last=performance.now();render();document.getElementById('notice').textContent='All local game data has been reset.';}
+function advance(now){const dt=Math.min(Math.max((now-last)/1000,0),1);last=now;if(running)a=clamp(a+dt*RATE);}
 function Click(){advance(performance.now());running=!running;render();save();}
-function buySpeedUpgrade(){
- advance(performance.now());
- if(displayedLayerValue(a)<nextLayerRequirement())return;
- speedLevel++;
- render();
- save();
- document.getElementById('notice').textContent='Speed increased to ×'+speed().toLocaleString('en-US')+'.';
-}
-function changeProgress(op,x){advance(performance.now());a=clamp(op==='set'?x:a*x);render();save();}
-function render(){document.getElementById('$&···!').innerHTML=omega(a,1);document.getElementById('ЛэАgСу').innerHTML=omega(a,0);document.getElementById('But').textContent=running?'Pause':'Continue';document.getElementById('m?m!m.').textContent=(running?speed():0).toLocaleString('en-US');
- document.getElementById('speed-level').textContent=speedLevel.toLocaleString('en-US');
- document.getElementById('current-speed').textContent=speed().toLocaleString('en-US');
- document.getElementById('next-speed').textContent=(speed()+1).toLocaleString('en-US');
- document.getElementById('next-layer').textContent=nextLayerRequirement().toLocaleString('en-US');
- const upgradeButton=document.getElementById('speed-upgrade-button');
- const unlocked=displayedLayerValue(a)>=nextLayerRequirement();
- upgradeButton.disabled=!unlocked;
- upgradeButton.textContent=unlocked?'Buy +1 Speed':'Reach Layer '+nextLayerRequirement().toLocaleString('en-US');document.getElementById('aaa~~').textContent=(a/50000).toFixed(2);document.getElementById('ordinal-level').textContent=Math.floor(a).toLocaleString('en-US');document.getElementById('breakr').textContent=stage;
- const target=a<5000000?5000000:(Math.floor(a/1000000)+1)*1000000;const sec=running&&a<MAX?Math.ceil((target-a)/(RATE*speed())):null;const parts=sec===null?['--','--','--']:[Math.floor(sec/3600),String(Math.floor(sec/60)%60).padStart(2,'0'),String(sec%60).padStart(2,'0')];['dbd','dbdbd','dbdbdbd'].forEach((id,i)=>document.getElementById(id).textContent=parts[i]);}
-function exportSave(){save();const url=URL.createObjectURL(new Blob([JSON.stringify({version:2,a,speedLevel,running})],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='layer-meta-save.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-async function importSave(file){if(!file)return;try{const s=JSON.parse(await file.text());if(!s||!Number.isFinite(s.a)||s.a<0)throw Error();a=clamp(s.a);speedLevel=Number.isFinite(s.speedLevel)&&s.speedLevel>=0?Math.floor(s.speedLevel):0;running=false;last=performance.now();save();render();document.getElementById('notice').textContent='Save imported (paused).';}catch{document.getElementById('notice').textContent='Invalid save file.';}}
+function render(){const layer=displayedLayerValue(a),gain=prestigeGain(layer),prestige=document.getElementById('prestige-button');document.getElementById('$&···!').innerHTML=omega(a,1);document.getElementById('ЛэАgСу').innerHTML=omega(a,0);document.getElementById('But').textContent=running?'Pause':'Continue';document.getElementById('layer-points').textContent=formatPoints(layerPoints);document.getElementById('prestige-info').textContent=gain?'Prestige now for +'+formatPoints(gain)+' Layer Points.':'Reach Layer 10 to prestige.';prestige.disabled=!gain;prestige.textContent=gain?'Layer Prestige (+ '+formatPoints(gain)+' LP)':'Layer Prestige unlocks at Layer 10';document.getElementById('aaa~~').textContent=(a/50000).toFixed(2);document.getElementById('ordinal-level').textContent=Math.floor(a).toLocaleString('en-US');document.getElementById('breakr').textContent=stage;
+ const target=a<5000000?5000000:(Math.floor(a/1000000)+1)*1000000;const sec=running&&a<MAX?Math.ceil((target-a)/RATE):null;const parts=sec===null?['--','--','--']:[Math.floor(sec/3600),String(Math.floor(sec/60)%60).padStart(2,'0'),String(sec%60).padStart(2,'0')];['dbd','dbdbd','dbdbdbd'].forEach((id,i)=>document.getElementById(id).textContent=parts[i]);}
+function exportSave(){save();const url=URL.createObjectURL(new Blob([JSON.stringify({version:3,a,layerPoints,running})],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='layer-meta-save.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+async function importSave(file){if(!file)return;try{const s=JSON.parse(await file.text());if(!s||!Number.isFinite(s.a)||s.a<0)throw Error();a=clamp(s.a);layerPoints=Number.isFinite(s.layerPoints)&&s.layerPoints>=0?clamp(s.layerPoints):0;running=false;last=performance.now();save();render();document.getElementById('notice').textContent='Save imported (paused).';}catch{document.getElementById('notice').textContent='Invalid save file.';}}
 load();render();setInterval(()=>{advance(performance.now());render();},50);setInterval(save,1000);window.addEventListener('pagehide',save);document.addEventListener('visibilitychange',()=>{last=performance.now();save();});
