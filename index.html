@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Layer Meta — Extended</title><link rel="stylesheet" href="style.css"><script src="game.js?v=b82d195" defer></script></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Layer Meta — Extended</title><link rel="stylesheet" href="style.css"><script src="game.js?v=prestige1" defer></script></head>
 <body><main><h1>LAYER META — EXTENDED</h1><div class="warning">!! EPILEPSY WARNING !!<br><small>Notation changes colour as you progress.</small></div><div id="$&···!" class="notation"></div>You are on Layer:<div id="ЛэАgСу" class="number">0</div>
 <div class="buttons">
 <button onclick="Click()" id="But">Continue</button>
 </div>
-<section class="speed-upgrade" aria-labelledby="speed-upgrade-title">
-<h2 id="speed-upgrade-title">Speed Upgrade</h2>
-<p>Level <span id="speed-level">0</span> · Current speed ×<span id="current-speed">1</span> · Next speed ×<span id="next-speed">2</span></p>
-<p>Next requirement: Layer <span id="next-layer">2</span></p>
-<button id="speed-upgrade-button" onclick="buySpeedUpgrade()">Buy +1 Speed</button>
+<section class="prestige" aria-labelledby="prestige-title">
+<h2 id="prestige-title">Layer Prestige</h2>
+<p>Layer points: <span id="layer-points">0</span></p>
+<p id="prestige-info">Reach Layer 10 to prestige.</p>
+<button onclick="buyLayerPrestige()" id="prestige-button" disabled>Layer Prestige</button>
 </section>
-<div class="buttons"></div>
-<div class="buttons"><button onclick="changeProgress('set',0)">Restart at 1α</button>
-<button onclick="changeProgress('mul',1.025)">Multiply Ord By: ×1.025</button><button onclick="changeProgress('mul',1.125)">Multiply Ord By: ×1.125</button><button onclick="changeProgress('mul',1.75)">Multiply Ord By: ×1.750</button>
-<button onclick="changeProgress('mul',1/1.025)">Divide Ord By: ÷1.025</button><button onclick="changeProgress('mul',1/1.125)">Divide Ord By: ÷1.125</button><button onclick="changeProgress('mul',1/1.75)">Divide Ord By: ÷1.750</button></div>
-<div class="stats">Speed: ×<span id="m?m!m."></span><br>Progress: <span id="aaa~~"></span>%<br>Ordinal Level: <span id="ordinal-level">?</span><br>Stage: <span id="breakr"></span><br>Time Remaining: <span id="dbd"></span>:<span id="dbdbd"></span>:<span id="dbdbdbd"></span></div>
-Additional Modded Options:<div class="buttons"><button onclick="changeProgress('set',5000000)">Jump to 5M</button></div>
-<div class="buttons"><button onclick="exportSave()">Export Save</button><label class="file-button">Import Save<input type="file" accept=".json,application/json" onchange="importSave(this.files[0]);this.value=''" aria-label="Import save"></label><button onclick="save();document.getElementById('notice').textContent='Save requested.'">Save</button></div><p id="notice" role="status"></p>
-<p class="note">Autosaves every second. ×1 speed = 250 progress per second.<br>Time remaining targets 5M, then each next million. No offline progress.<br>Higher stages are symbolic notation extensions. Progress is capped at JavaScript's safe integer limit.</p>
+<div class="stats">Progress: <span id="aaa~~"></span>%<br>Ordinal Level: <span id="ordinal-level">?</span><br>Stage: <span id="breakr"></span><br>Time Remaining: <span id="dbd"></span>:<span id="dbdbd"></span>:<span id="dbdbdbd"></span></div>
+<div class="buttons"><button onclick="exportSave()">Export Save</button><label class="file-button">Import Save<input type="file" accept=".json,application/json" onchange="importSave(this.files[0]);this.value=''" aria-label="Import save"></label><button onclick="save();document.getElementById('notice').textContent='Save requested.'">Save</button><button class="danger" onclick="resetData()">Reset Data</button></div><p id="notice" role="status"></p>
+<p class="note">Progress advances at a fixed 250 units per second while running.<br>Layer Prestige unlocks at Layer 10. Each layer above 10 multiplies its Layer Point gain by ×1.1.<br>Prestiging resets progress but keeps Layer Points. No offline progress.</p>
 </main></body></html>
