@@ -68,3 +68,12 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .simulator-room,.rebirth-area{flex:0 0 auto;width:100%}
 .simulator-room{margin:0}
 .rebirth-area{margin-top:0}
+
+
+.layers-cubed,.rebirth-milestone-panel{box-sizing:border-box;margin:18px auto;padding:16px;width:min(100% - 32px,960px);border:1px solid #4a4a4a;border-radius:6px;background:#080808;color:#eee}
+.layers-cubed{border-color:#35cfff}
+.layers-cubed h2,.rebirth-milestone-panel h3{margin:4px 0 12px;color:#63d9ff}
+.layers-cubed-number{color:#39fff4}
+.rebirth-milestone-panel{border-color:#6bc8ff;background:rgba(0,8,14,.88)}
+.rebirth-milestone-panel>p{margin:8px 0;color:#c8efff}
+.rebirth-milestone-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;max-height:320px;overflow:auto;padding:4px}
