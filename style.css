@@ -2,3 +2,4 @@ html,body{margin:0;padding:0;background:#000;color:#fff;font-family:monospace;te
 button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#333}.prestige{margin:20px auto;padding:14px;max-width:520px;border:1px solid #555;border-radius:4px;color:#d9f7ff}.prestige h2{margin:0 0 10px;font-size:16px;color:#bbb}.prestige p{margin:6px 0}.danger{border-color:#a44;color:#ffb0b0}.danger:hover{background:#351818;border-color:#f66}
 .ordinal-expression{display:inline-block;max-width:100%;line-height:1.35;letter-spacing:.02em;text-align:center}
 .layers-squared{margin:20px auto;padding:14px;max-width:520px;border:1px solid #555;border-radius:4px;color:#e6d9ff}.layers-squared h2{margin:0 0 10px;font-size:16px;color:#c9adff}.layers-squared p{margin:6px 0}
+.layers-squared-notation{font-size:2em;min-height:42px}.layers-squared-number{font-size:1.5em;margin:6px 0 12px}
