@@ -177,8 +177,8 @@ function layersSquaredTenTenExponent(){return Math.max(0,Math.floor((layersSquar
 function speedAutobuyerRate(){return speedAutobuyerUnlocked?1+Math.max(0,layersSquaredTenTenExponent()-4):0;}
 function addLogAmounts(left,right){if(left===null)return right;if(right===null)return left;const high=Math.max(left,right),low=Math.min(left,right);return high-low>20?high:high+Math.log10(1+10**(low-high));}
 function simulatorUnlocked(){return hyperArrowOrder>=SIMULATOR_ARROW_UNLOCK;}
-function layersSquaredMoneyBoost(){return moneyLog===null?1:Math.min(MAX,10**Math.min(308,moneyLog*moneyBoostExponent()));}
-function layersSquaredTotalSpeedBoost(){const total=layersSquaredSelfSpeedBoost()*layersSquaredSpeedUpgradeBoost()*layersSquaredMoneyBoost()*layersSquaredMilestoneBoost();return Number.isFinite(total)?Math.min(MAX,total):MAX;}
+function layersSquaredMoneyBoost(){return moneyLog===null?1:10**Math.min(308,moneyLog*moneyBoostExponent());}
+function layersSquaredTotalSpeedBoost(){const total=layersSquaredSelfSpeedBoost()*layersSquaredSpeedUpgradeBoost()*layersSquaredMoneyBoost()*layersSquaredMilestoneBoost();return Number.isFinite(total)?total:Number.MAX_VALUE;}
 function setOrdinalFontScale(value){ordinalFontScale=Math.max(50,Math.min(150,Number(value)||100));document.documentElement.style.setProperty('--ordinal-font-scale',String(ordinalFontScale/100));document.getElementById('ordinal-font-value').textContent=ordinalFontScale+'%';document.getElementById('ordinal-font-size').value=ordinalFontScale;save();}
 function formatBoost(value){return !Number.isFinite(value)?'∞':value>=1e21?value.toExponential(3):value.toLocaleString('en-US',{maximumFractionDigits:3});}
 function openButtonSimulator(){if(!simulatorUnlocked())return;document.body.classList.add('simulator-open');render();}
@@ -269,7 +269,7 @@ function advance(now){
   if(a>=PROGRESS_MAX){stageSevenReached=true;highestStageIndex=Math.max(highestStageIndex,currentStageIndex());}
   if(layersSquaredUnlocked){
    if(layersSquaredProgress<PROGRESS_MAX)layersSquaredProgress=clamp(layersSquaredProgress+dt*RATE*layersSquaredTotalSpeedBoost());
-   else{const logSpeed=Math.log10(layersSquaredSelfSpeedBoost())+Math.log10(layersSquaredSpeedUpgradeBoost())+(moneyLog===null?0:moneyLog*moneyBoostExponent());const logSpeedPlusOne=logSpeed>300?logSpeed:Math.log10(10**logSpeed+1);layersSquaredArrowOrder+=dt*Math.max(0.05,logSpeedPlusOne/4);}
+   else{const logSpeed=Math.log10(layersSquaredSelfSpeedBoost())+Math.log10(layersSquaredSpeedUpgradeBoost())+(moneyLog===null?0:moneyLog*moneyBoostExponent())+Math.log10(layersSquaredMilestoneBoost());const logSpeedPlusOne=logSpeed>300?logSpeed:Math.log10(10**logSpeed+1);layersSquaredArrowOrder+=dt*Math.max(0.05,logSpeedPlusOne/4);}
   }
  }
  if(simulatorUnlocked()){const moneyGainLog=Math.log10(Math.max(dt,1e-12))+(multiplierLog===null?0:multiplierLog/2)+Math.log10(moneyGenerationMilestoneBoost());moneyLog=addLogAmounts(moneyLog,moneyGainLog);moneyBestLog=moneyBestLog===null?moneyLog:Math.max(moneyBestLog,moneyLog);checkMoneyMilestones();}
