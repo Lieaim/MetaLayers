@@ -178,7 +178,7 @@ function speedAutobuyerRate(){return speedAutobuyerUnlocked?1+Math.max(0,layersS
 function addLogAmounts(left,right){if(left===null)return right;if(right===null)return left;const high=Math.max(left,right),low=Math.min(left,right);return high-low>20?high:high+Math.log10(1+10**(low-high));}
 function simulatorUnlocked(){return hyperArrowOrder>=SIMULATOR_ARROW_UNLOCK;}
 function layersSquaredMoneyBoost(){return moneyLog===null?1:Math.min(MAX,10**Math.min(308,moneyLog*moneyBoostExponent()));}
-function layersSquaredTotalSpeedBoost(){const total=layersSquaredSelfSpeedBoost()*layersSquaredSpeedUpgradeBoost()*layersSquaredMoneyBoost();return Number.isFinite(total)?Math.min(MAX,total):MAX;}
+function layersSquaredTotalSpeedBoost(){const total=layersSquaredSelfSpeedBoost()*layersSquaredSpeedUpgradeBoost()*layersSquaredMoneyBoost()*layersSquaredMilestoneBoost();return Number.isFinite(total)?Math.min(MAX,total):MAX;}
 function setOrdinalFontScale(value){ordinalFontScale=Math.max(50,Math.min(150,Number(value)||100));document.documentElement.style.setProperty('--ordinal-font-scale',String(ordinalFontScale/100));document.getElementById('ordinal-font-value').textContent=ordinalFontScale+'%';document.getElementById('ordinal-font-size').value=ordinalFontScale;save();}
 function formatBoost(value){return !Number.isFinite(value)?'∞':value>=1e21?value.toExponential(3):value.toLocaleString('en-US',{maximumFractionDigits:3});}
 function openButtonSimulator(){if(!simulatorUnlocked())return;document.body.classList.add('simulator-open');render();}
@@ -190,6 +190,9 @@ function moneyMilestoneDescription(index){
  if(index===0)return 'Money^0.5 also boosts normal Layers speed.';
  if(index===1)return 'Money based speed boosts use money^0.6.';
  if(index===2)return 'Money production gains a multiplier based on your current ordinal stage.';
+ if(index===3)return 'Extreme symbolic Layer speed is multiplied by 2; each later milestone doubles it again.';
+ if(index===4)return 'Layers² speed is multiplied by the number of reached Money Milestones squared.';
+ if(index===5)return 'Normal Layer speed is multiplied by the number of reached Money Milestones cubed.';
  return 'Money production and multiplier gains are each doubled again.';
 }
 function checkMoneyMilestones(){
@@ -200,7 +203,9 @@ function moneyBoostExponent(){return moneyMilestones[1]?0.6:0.5;}
 function moneyMilestoneCompoundBoost(){return 2**Math.max(0,moneyMilestoneCount()-2);}
 function moneyGenerationMilestoneBoost(){return moneyMilestoneCompoundBoost()*(moneyMilestones[2]?1+currentStageIndex():1);}
 function multiplierGainMilestoneBoost(){return moneyMilestoneCompoundBoost();}
-function normalMoneyBoost(){return moneyMilestones[0]?layersSquaredMoneyBoost():1;}
+function extremeSymbolicMilestoneBoost(){return moneyMilestoneCount()>=4?2**(moneyMilestoneCount()-3):1;}
+function layersSquaredMilestoneBoost(){const count=moneyMilestoneCount();return count>=5?count**2:1;}
+function normalMoneyBoost(){const moneyBoost=moneyMilestones[0]?layersSquaredMoneyBoost():1,count=moneyMilestoneCount();return moneyBoost*(count>=6?count**3:1);}
 function spendMoneyLog(costLog){
  if(moneyLog===null||moneyLog<costLog)return false;
  const difference=moneyLog-costLog;
@@ -260,7 +265,7 @@ function advance(now){
  const dt=Math.min(Math.max((now-last)/1000,0),1);last=now;
  if(running){
   const layer=displayedLayerValue(a),speed=totalSpeed(layer)*pointSpeedBoost()*layersSquaredSpeedBoost()*stageSpeedBoost()*normalMoneyBoost();
-  if(a<PROGRESS_MAX)a=clamp(a+dt*RATE*speed);else hyperArrowOrder+=dt*Math.max(0.05,Math.log10(speed+1)/0.04);
+  if(a<PROGRESS_MAX)a=clamp(a+dt*RATE*speed);else hyperArrowOrder+=dt*Math.max(0.05,Math.log10(speed+1)/0.04)*extremeSymbolicMilestoneBoost();
   if(a>=PROGRESS_MAX){stageSevenReached=true;highestStageIndex=Math.max(highestStageIndex,currentStageIndex());}
   if(layersSquaredUnlocked){
    if(layersSquaredProgress<PROGRESS_MAX)layersSquaredProgress=clamp(layersSquaredProgress+dt*RATE*layersSquaredTotalSpeedBoost());
