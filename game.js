@@ -213,8 +213,20 @@ function layersSquaredTotalSpeedBoost(){const total=layersSquaredSelfSpeedBoost(
 function setOrdinalFontScale(value){ordinalFontScale=Math.max(50,Math.min(150,Number(value)||100));document.documentElement.style.setProperty('--ordinal-font-scale',String(ordinalFontScale/100));document.getElementById('ordinal-font-value').textContent=ordinalFontScale+'%';document.getElementById('ordinal-font-size').value=ordinalFontScale;save();}
 function formatBoost(value){return !Number.isFinite(value)?'∞':value>=1e21?value.toExponential(3):value.toLocaleString('en-US',{maximumFractionDigits:3});}
 function formatAutobuyerValue(value){return !Number.isFinite(value)?'∞':value>=1e12?value.toExponential(3):value.toLocaleString('en-US',{maximumFractionDigits:3});}
-function openButtonSimulator(){if(!simulatorUnlocked())return;document.body.classList.add('simulator-open');render();}
-function closeButtonSimulator(){document.body.classList.remove('simulator-open');render();}
+function openButtonSimulator(){
+ if(!simulatorUnlocked())return;
+ document.body.classList.add('simulator-open');
+ const main=document.querySelector('main'),area=document.getElementById('button-simulator-area');
+ Object.assign(main.style,{display:'block',boxSizing:'border-box',maxWidth:'none',width:'100%',height:'100vh',minHeight:'100vh',margin:'0',padding:'0',overflowX:'hidden',overflowY:'auto'});
+ Object.assign(area.style,{display:'block',boxSizing:'border-box',width:'min(100%, 1000px)',height:'auto',minHeight:'0',margin:'20px auto 40px',padding:'0',border:'0',overflow:'visible',background:'transparent'});
+ render();
+}
+function closeButtonSimulator(){
+ document.body.classList.remove('simulator-open');
+ document.querySelector('main').removeAttribute('style');
+ document.getElementById('button-simulator-area').removeAttribute('style');
+ render();
+}
 function tradeMoneyForMultiplier(){if(moneyLog===null||moneyLog<0)return;moneyBestLog=moneyBestLog===null?moneyLog:Math.max(moneyBestLog,moneyLog);checkMoneyMilestones();const gainLog=moneyLog*moneyToMultiplierExponent()+Math.log10(multiplierGainMilestoneBoost());multiplierLog=addLogAmounts(multiplierLog,gainLog);moneyLog=null;render();save();document.getElementById('notice').textContent='Money traded for '+formatLogValue(gainLog)+' multiplier.';}
 const MONEY_MILESTONE_REQUIREMENTS=Array.from({length:10},(_,i)=>10**(i+3));
 function moneyMilestoneCount(){return moneyMilestones.filter(Boolean).length;}
