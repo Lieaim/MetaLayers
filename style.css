@@ -8,3 +8,5 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 
 .deep-ordinal{display:inline-block;max-width:100%;line-height:1.28;letter-spacing:.018em;color:#ff401d;text-shadow:0 0 6px #f10,0 0 15px #ff9a18,0 0 26px #771000;font-weight:700;font-size:1.13em;overflow-wrap:anywhere}
 .deep-ordinal sup{color:#ffb000;text-shadow:0 0 7px #ff7200}.deep-ordinal sub{color:#ff3518}
+
+.deep-ordinal{overflow:visible;padding-top:13em;padding-bottom:.6em;text-align:left}.ordinal-stair{display:inline-flex;align-items:flex-end;white-space:nowrap;min-height:1.5em}.ordinal-stair-step{display:inline-block;position:relative;top:calc(-1 * var(--rise));margin-right:.02em;font-size:1.04em}.ordinal-stair-step sup{font-size:.62em;vertical-align:super;color:#ffb000;text-shadow:0 0 7px #ff7200}.ordinal-stair-step:first-child{color:#ff291c}.ordinal-stair-step:nth-child(2n){color:#ff6719}.ordinal-stair-step:last-child{color:#ffad00}
