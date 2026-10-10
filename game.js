@@ -48,16 +48,26 @@ function symbolicStageInfo(order){let info=SYMBOLIC_STAGES[0];for(const candidat
 function symbolicArrowStage(order){const info=symbolicStageInfo(order);return info.id+' - '+info.name;}
 function currentStageIndex(){return a>=PROGRESS_MAX?symbolicStageInfo(hyperArrowOrder).at===0?1:SYMBOLIC_STAGES.indexOf(symbolicStageInfo(hyperArrowOrder))+1:0;}
 function stageSpeedBoost(){return 1.2**Math.max(highestStageIndex,currentStageIndex());}
+function multiTowerLevels(order){
+ let progress=Math.max(0,Math.floor((order-10000)/5));
+ return Array.from({length:10},(_,index)=>{
+  const place=9-index,level=1+Math.floor(progress/(5**place))%5;
+  return level;
+ });
+}
+function multiTowerPower(level,index,order){
+ let content=index===9?'α+'+(9+Math.floor(Math.log10(order))).toLocaleString('en-US'):'ω+'+(10-index);
+ for(let rung=0;rung<level;rung++){
+  const base='ω+'+([4,2,1,2,3,1,2,4,2,1][(index+rung)%10]);
+  content=base+'<sup>'+content+'</sup>';
+ }
+ return content;
+}
 function deepOrdinalNotation(order,detailed){
- const height=Math.min(12,5+Math.floor(Math.log10(order/10000)));
- const bases=['ω+4','ω+2','ω+1','ω+2','ω+3','ω+1','ω+2','ω','ω+1','ω'];
- const tail='ω<sup>ω<sup>β<sup>α+'+(9+Math.floor(Math.log10(order))).toLocaleString('en-US')+'</sup></sup></sup>';
- const steps=Array.from({length:height},(_,i)=>{
-  const base=bases[i%bases.length],exponent=i===height-1?tail:bases[(i+1)%bases.length];
-  return '<span class="ordinal-stair-step" style="--rise:'+(i*1.1).toFixed(1)+'em">'+base+'<sup>'+exponent+'</sup></span>';
- }).join('');
+ const levels=multiTowerLevels(order);
+ const towers=levels.map((level,index)=>'<span class="ordinal-tower-block" data-level="'+level+'" style="--tower-rise:'+(index*.42).toFixed(2)+'em">'+multiTowerPower(level,index,order)+'</span>').join('');
  const compact='H<sub>ψ[Ω<sup>'+order.toLocaleString('en-US')+'</sup>+Γ<sup>ω</sup>]</sub>';
- return detailed?'<span class="ordinal-expression deep-ordinal"><span class="ordinal-stair">'+steps+'</span></span>':compact;
+ return detailed?'<span class="ordinal-expression deep-ordinal"><span class="ordinal-multitower">'+towers+'</span></span>':compact;
 }
 function symbolicArrowOrdinal(v){
  const order=Math.max(1,Math.floor(hyperArrowOrder));
