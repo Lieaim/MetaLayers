@@ -365,6 +365,9 @@ function advance(now){
  if(speedAutobuyerUnlocked){autobuyerElapsed+=dt*speedAutobuyerRate();const levels=Math.floor(autobuyerElapsed);if(levels){speedLevel+=levels;autobuyerElapsed-=levels;}}
 }
 function Click(){advance(performance.now());running=!running;render();save();}
+function resetNormalLayerForTesting(){a=0;hyperArrowOrder=0;stage='';render();save();document.getElementById('notice').textContent='Normal Layer reset to 1 for testing.';}
+function resetLayersSquaredForTesting(){if(!layersSquaredUnlocked)return;layersSquaredProgress=0;layersSquaredArrowOrder=0;render();save();document.getElementById('notice').textContent='Layers² reset to 1 for testing.';}
+function resetLayersCubedForTesting(){if(!layersCubedUnlocked)return;layersCubedProgress=0;layersCubedArrowOrder=0;render();save();document.getElementById('notice').textContent='Layers³ reset to 1 for testing.';}
 function setOrdinalDisplay(id,html){
  const container=document.getElementById(id);
  const previous=typeof container.querySelector==='function'?container.querySelector('.deep-ordinal'):null;
