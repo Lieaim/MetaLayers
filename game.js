@@ -74,6 +74,24 @@ function multiTowerPower(level,index,order){
  }
  return content;
 }
+function extremeSymbolicOrdinalNotation(order,detailed){
+ const tier=Math.max(0,Math.floor(Math.log10(order/10000000000)));
+ const count=Math.min(250,50+tier*12);
+ const greek=['Ω','ψ','α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','π','ρ','σ','τ','υ','φ','χ','ω','Γ','Ψ','Ξ','Λ','Π'];
+ const compact='H<sub>ψ[Ω<sup>'+order.toLocaleString('en-US')+'</sup>+Γ<sup>ω</sup>]</sub>';
+ if(!detailed)return compact;
+ const units=Array.from({length:count},(_,index)=>{
+  const seed=index+tier*7,base=greek[(seed*7)%greek.length],sub=greek[(seed*11+3)%greek.length];
+  let exponent=greek[(seed*13+5)%greek.length]+'<sub>'+greek[(seed*17+9)%greek.length]+'</sub>';
+  const depth=Math.min(6,2+Math.floor(tier/2)+(index%2));
+  for(let rung=0;rung<depth;rung++){
+   const power=greek[(seed+rung*9+1)%greek.length];
+   exponent=power+'<sup>'+exponent+'</sup>';
+  }
+  return '<span class="ordinal-crazy-unit">'+base+'<sub>'+sub+'<sup>'+((seed%9)+1)+'</sup></sub><sup>'+exponent+'</sup></span>';
+ });
+ return '<span class="ordinal-expression deep-ordinal crazy-ordinal"><span class="crazy-sequence"><span class="crazy-bracket">f[</span>'+units.join('<span class="crazy-separator"> · </span>')+'<span class="crazy-bracket">]</span></span></span>';
+}
 function deepOrdinalNotation(order,detailed){
  const levels=multiTowerLevels(order);
  const towers=levels.map(({level,index,slot})=>'<span class="ordinal-tower-block" data-level="'+level+'" style="--tower-rise:'+(slot*.30).toFixed(2)+'em">'+multiTowerPower(level,index,order)+'</span>').join('');
@@ -82,6 +100,8 @@ function deepOrdinalNotation(order,detailed){
 }
 function symbolicLayersSquaredOrdinal(v){
  const order=Math.max(1,Math.floor(layersSquaredArrowOrder));
+ if(order>=10000000000)return extremeSymbolicOrdinalNotation(order,v);
+ if(order>=10000000000)return extremeSymbolicOrdinalNotation(order,v);
  if(order>=10000)return deepOrdinalNotation(order,v);
  const arrows='10↑↑'+order.toLocaleString('en-US');
  if(order>=10){
