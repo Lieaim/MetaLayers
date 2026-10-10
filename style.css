@@ -55,3 +55,10 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .ordinal-font-setting input[type=range]{width:min(360px,80vw);accent-color:cyan;cursor:pointer}
 .ordinal-font-setting output{color:cyan;font-variant-numeric:tabular-nums}
 
+
+.crazy-ordinal{display:block;box-sizing:border-box;width:100%;max-width:100%;padding:.7em .4em;overflow-x:auto;overflow-y:visible;text-align:left;color:#3bfff5;text-shadow:0 0 5px #09d9ed,0 0 14px #008fc4;font-size:1.08em;line-height:1.45}
+.crazy-sequence{display:inline-block;min-width:max-content;padding:.45em .3em;white-space:nowrap}
+.ordinal-crazy-unit{display:inline-block;margin:0 .035em;color:#45fff1;text-shadow:0 0 5px #00ddea,0 0 12px #087ba5}
+.ordinal-crazy-unit sup,.ordinal-crazy-unit sub{color:#a8fff8;text-shadow:0 0 5px #13dfff}
+.crazy-separator{color:#67e9ff;text-shadow:0 0 8px #00c9ff}
+.crazy-bracket{color:#bcff00;text-shadow:0 0 9px #ceff00;font-size:1.1em;font-weight:bold}
