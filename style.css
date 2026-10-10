@@ -77,3 +77,5 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .rebirth-milestone-panel{border-color:#6bc8ff;background:rgba(0,8,14,.88)}
 .rebirth-milestone-panel>p{margin:8px 0;color:#c8efff}
 .rebirth-milestone-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px;max-height:320px;overflow:auto;padding:4px}
+
+.test-reset{display:block;margin:10px auto 0;border-color:#9b7350;color:#ffcfad;font-size:.9em}.test-reset:hover{border-color:#ffb76d;background:#24170f}
