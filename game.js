@@ -19,6 +19,12 @@ function LayerTetr(n,f) { if(n<2){const v=n<1?ptFunction(n):10**ptFunction(n);re
 function LayerPent(n,f) {if(n<1)return LayerTetr(n,f);if(n<2)return LayerTetr(ptFunction(n),f);const d=Math.floor(n-2);return 'Σ<sub>'+(['|','(','{','[',':','+','-','='][d]||'Σ')+LayerTetr(ptFunction(n),1)+(['|',')','}',']',':','+','-','='][d]||'Σ')+'</sub>(0)';}
 function LayerHex(n) {if(n>=16384)return 'Ʊ<sup>2</sup>'; // Compact long repeated expressions before creating them.
  const count=Math.floor(n);return (count>80?'(Ʊ+)×'+count.toLocaleString('en-US')+' + ':'Ʊ+'.repeat(count))+LayerPent(ptFunction(n),2);}
+function higherOrdinal(arrows,value,tier){
+ const depth=Math.min(8,3+tier);
+ const chain=Array.from({length:depth},(_,i)=>`ω<sup>${i===depth-1?value.toFixed(4):'Ω<sub>'+(arrows-i).toLocaleString('en-US')+'</sub>'}</sup>`).join(' + ');
+ const index=Layer(Math.min(480,arrows+tier+2));
+ return '<span class="ordinal-expression">ψ<sub>Ω<sup>'+arrows.toLocaleString('en-US')+'</sup>·'+index+'</sub>(ε<sub>'+(arrows+tier).toLocaleString('en-US')+'</sub> + '+chain+' + φ<sub>'+(tier+1).toLocaleString('en-US')+'</sub>(Γ<sup>ω</sup>·'+value.toFixed(4)+'))</span>';
+}
 function omega(n,v) {
  let i,value;
  if(n<100000){stage='1A - Alphas (1–2)';return v?current(n/100000+1):'1';}
@@ -32,7 +38,7 @@ function omega(n,v) {
  const tier=Math.floor((n-5000000)/1000000), arrows=5+tier;
  i=((n-5000000)%1000000)/1000000;value=1+9**((i+i*i)/2);
  stage=(tier+6)+' - '+({5:'Heptation',6:'Octation',7:'Enneation',8:'Decation',9:'Undecation',10:'Dodecation'}[arrows]||'Higher Hyperoperations')+' ('+arrows.toLocaleString('en-US')+' up-arrows)';
- return v?tint(100+tier*100,'Ʊ<sup>'+(arrows-2).toLocaleString('en-US')+'</sup><sub>'+value.toFixed(4)+'</sub>'):'10'+(arrows<=8?'↑'.repeat(arrows):'↑<sup>'+arrows.toLocaleString('en-US')+'</sup>')+value.toFixed(4);
+ return v?tint(100+tier*100,higherOrdinal(arrows,value,tier)):'10'+(arrows<=8?'↑'.repeat(arrows):'↑<sup>'+arrows.toLocaleString('en-US')+'</sup>')+value.toFixed(4);
 }
 // This mirrors the numerical value shown by omega(a, 0). Once notation becomes
 // symbolic, it is already beyond the largest safely representable layer number.
