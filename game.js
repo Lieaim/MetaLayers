@@ -106,7 +106,14 @@ function pointGainLog(layer){
  if(layer<10)return null;
  const softcap=pointSoftcapLayer();
  const effectiveLayer=layer<=softcap?layer:softcap+1000*Math.log10(layer/softcap);
- return (effectiveLayer-10)*LOG10_1_1;
+ const numericGain=(effectiveLayer-10)*LOG10_1_1;
+ // Symbolic arrow progression is beyond JavaScript's normal number range, so it
+ // contributes directly to the Layer Point exponent instead of flattening at MAX.
+ if(a>=PROGRESS_MAX){
+  const symbolicGain=(Math.max(0,hyperArrowOrder)+1)**1.25*1e12*stageSpeedBoost();
+  return numericGain+symbolicGain;
+ }
+ return numericGain;
 }
 function addLayerPoints(logGain){
  if(logGain===null)return;
