@@ -1,6 +1,6 @@
 'use strict';
 // Symbolic notation: these functions format progression rather than evaluate hyperoperations.
-const MAX = Number.MAX_SAFE_INTEGER, PROGRESS_MAX = 1e21, RATE = 250, KEY = 'layermeta', LOG10_1_1 = Math.log10(1.1), LOG2_10 = Math.LOG2E*Math.LN10, LAYERS_SQUARED_COST = 1, POINT_SOFTCAP_LAYER = 1e9, LAYERS_SQUARED_BOOST_SOFTCAP = 1e6, AUTOBUYER_COST_LOG = 1e11;
+const MAX = Number.MAX_SAFE_INTEGER, PROGRESS_MAX = 1e21, RATE = 250, KEY = 'layermeta', LOG10_1_1 = Math.log10(1.1), LOG2_10 = Math.LOG2E*Math.LN10, LAYERS_SQUARED_COST = 1, POINT_SOFTCAP_LAYER = 1e9, LAYER_BOOST_SOFTCAP = 100, AUTOBUYER_COST_LOG = 1e11;
 let a = 0, layerPointsLog = null, speedLevel = 0, layersSquaredProgress = 0, layersSquaredUnlocked = false, hyperArrowOrder = 0, stageSevenReached = false, speedAutobuyerUnlocked = false, autobuyerElapsed = 0, running = false, stage = '', last = performance.now();
 const clamp = n => Number.isFinite(n) ? Math.min(PROGRESS_MAX, Math.max(0,n)) : PROGRESS_MAX;
 const GREEK = 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';
@@ -111,11 +111,15 @@ function spendLayerPointsLog(costLog){
  return true;
 }
 const pointSpeedBoost = () => layerPointsLog===null?1:Math.max(1,layerPointsLog*LOG2_10+1);
-function layersSquaredSpeedBoost(){
- if(!layersSquaredUnlocked)return 1;
- const layer=layersSquaredLayer(),atSoftcap=Math.log2(LAYERS_SQUARED_BOOST_SOFTCAP)+1;
- return layer<=LAYERS_SQUARED_BOOST_SOFTCAP?Math.log2(layer)+1:atSoftcap+Math.sqrt(Math.log2(layer/LAYERS_SQUARED_BOOST_SOFTCAP));
+function layersSquaredRawBoost(){
+ const layer=layersSquaredLayer(),numericBoost=Math.log2(layer)+1;
+ if(layer<MAX)return numericBoost;
+ // Once the notation becomes symbolic, progress itself keeps the effect growing.
+ return Math.log2(MAX)+1+(layersSquaredProgress-1200000)/100000;
 }
+function softcapLayerBoost(boost){return boost<=LAYER_BOOST_SOFTCAP?boost:LAYER_BOOST_SOFTCAP+Math.sqrt(boost-LAYER_BOOST_SOFTCAP);}
+function layersSquaredSpeedBoost(){return !layersSquaredUnlocked?1:softcapLayerBoost(layersSquaredRawBoost());}
+// Self speed stays exactly half the normal effect, so its matching softcap begins at ×50.
 const layersSquaredSelfSpeedBoost = () => Math.max(1,layersSquaredSpeedBoost()/2);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({version:7,a,layerPointsLog,speedLevel,layersSquaredProgress,layersSquaredUnlocked,hyperArrowOrder,stageSevenReached,speedAutobuyerUnlocked,running}));}catch{document.getElementById('notice').textContent='Browser saving is unavailable. Export a backup.';}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(typeof s==='number'&&Number.isFinite(s)&&s>=0)a=clamp(s);else if(s&&Number.isFinite(s.a)&&s.a>=0){a=clamp(s.a);layerPointsLog=Number.isFinite(s.layerPointsLog)?s.layerPointsLog:(Number.isFinite(s.layerPoints)&&s.layerPoints>0?Math.log10(s.layerPoints):null);speedLevel=Number.isInteger(s.speedLevel)&&s.speedLevel>=0?s.speedLevel:0;layersSquaredProgress=Number.isFinite(s.layersSquaredProgress)&&s.layersSquaredProgress>=0?clamp(s.layersSquaredProgress):0;layersSquaredUnlocked=s.layersSquaredUnlocked===true;hyperArrowOrder=Number.isFinite(s.hyperArrowOrder)&&s.hyperArrowOrder>=0?s.hyperArrowOrder:0;stageSevenReached=s.stageSevenReached===true||a>=PROGRESS_MAX;speedAutobuyerUnlocked=s.speedAutobuyerUnlocked===true;running=s.running===true;}}catch{}}
