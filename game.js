@@ -48,10 +48,17 @@ function symbolicStageInfo(order){let info=SYMBOLIC_STAGES[0];for(const candidat
 function symbolicArrowStage(order){const info=symbolicStageInfo(order);return info.id+' - '+info.name;}
 function currentStageIndex(){return a>=PROGRESS_MAX?symbolicStageInfo(hyperArrowOrder).at===0?1:SYMBOLIC_STAGES.indexOf(symbolicStageInfo(hyperArrowOrder))+1:0;}
 function stageSpeedBoost(){return 1.2**Math.max(highestStageIndex,currentStageIndex());}
+function deepOrdinalNotation(order,detailed){
+ const depth=Math.min(18,8+Math.floor(Math.log10(order/10000)));
+ const spine=Array.from({length:depth},(_,i)=>'ψ<sup>Ω<sup>'+(order-i).toLocaleString('en-US')+'</sup></sup>').join('+');
+ const core='H<sub>ψ[Ω<sup>'+order.toLocaleString('en-US')+'</sup>+'+spine+'+Γ<sup>ψ<sup>Ω<sup>θ</sup></sup></sup>]</sub>';
+ return detailed?'<span class="ordinal-expression deep-ordinal">'+core+'</span>':core;
+}
 function symbolicArrowOrdinal(v){
  const order=Math.max(1,Math.floor(hyperArrowOrder));
  const arrows='10↑↑'+order.toLocaleString('en-US');
  stage=symbolicArrowStage(order)+' ('+arrows+' up-arrows)';
+ if(order>=10000)return deepOrdinalNotation(order,v);
  if(order>=10){
   const depth=Math.min(7,2+Math.floor(Math.log10(order))),tower='10<sup>'.repeat(depth)+'Ω<sup>θ</sup>·'+arrows+'</sup>'.repeat(depth);
   return v?'<span class="ordinal-expression tower-ordinal">⟨|{ε}δ[β<sup>ω</sup>(Ω<sup>θ</sup>)]|⟩ · '+tower+' · Γ<sup>Ω<sup>θ</sup></sup></span>':'10↑<sup>'+arrows+'</sup>10.0000';
