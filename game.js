@@ -49,10 +49,15 @@ function symbolicArrowStage(order){const info=symbolicStageInfo(order);return in
 function currentStageIndex(){return a>=PROGRESS_MAX?symbolicStageInfo(hyperArrowOrder).at===0?1:SYMBOLIC_STAGES.indexOf(symbolicStageInfo(hyperArrowOrder))+1:0;}
 function stageSpeedBoost(){return 1.2**Math.max(highestStageIndex,currentStageIndex());}
 function deepOrdinalNotation(order,detailed){
- const depth=Math.min(18,8+Math.floor(Math.log10(order/10000)));
- const spine=Array.from({length:depth},(_,i)=>'ψ<sup>Ω<sup>'+(order-i).toLocaleString('en-US')+'</sup></sup>').join('+');
- const core='H<sub>ψ[Ω<sup>'+order.toLocaleString('en-US')+'</sup>+'+spine+'+Γ<sup>ψ<sup>Ω<sup>θ</sup></sup></sup>]</sub>';
- return detailed?'<span class="ordinal-expression deep-ordinal">'+core+'</span>':core;
+ const height=Math.min(12,5+Math.floor(Math.log10(order/10000)));
+ const bases=['ω+4','ω+2','ω+1','ω+2','ω+3','ω+1','ω+2','ω','ω+1','ω'];
+ const tail='ω<sup>ω<sup>β<sup>α+'+(9+Math.floor(Math.log10(order))).toLocaleString('en-US')+'</sup></sup></sup>';
+ const steps=Array.from({length:height},(_,i)=>{
+  const base=bases[i%bases.length],exponent=i===height-1?tail:bases[(i+1)%bases.length];
+  return '<span class="ordinal-stair-step" style="--rise:'+(i*1.1).toFixed(1)+'em">'+base+'<sup>'+exponent+'</sup></span>';
+ }).join('');
+ const compact='H<sub>ψ[Ω<sup>'+order.toLocaleString('en-US')+'</sup>+Γ<sup>ω</sup>]</sub>';
+ return detailed?'<span class="ordinal-expression deep-ordinal"><span class="ordinal-stair">'+steps+'</span></span>':compact;
 }
 function symbolicArrowOrdinal(v){
  const order=Math.max(1,Math.floor(hyperArrowOrder));
