@@ -13,9 +13,3 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 
 .deep-ordinal{padding-top:18em;padding-bottom:1em;overflow-x:auto;text-align:left}.ordinal-multitower{display:inline-flex;align-items:flex-end;min-width:max-content;min-height:2em;padding-right:1em}.ordinal-tower-block{display:inline-block;position:relative;top:calc(-1 * var(--tower-rise));margin-right:-.08em;font-size:1.08em;color:#ff611a;text-shadow:0 0 6px #f10,0 0 15px #ff9a18}.ordinal-tower-block sup{font-size:.62em;color:#ffb000;text-shadow:0 0 7px #ff7200}.ordinal-tower-block[data-level="5"]{color:#ff201c;text-shadow:0 0 9px #f20,0 0 20px #ff6a00}.ordinal-tower-block:first-child{color:#ff251c}.ordinal-tower-block:last-child{color:#ffc000}
 
-/* Deep ten-tower notation fills the viewport instead of creating a nested scroller. */
-body{overflow-x:clip}
-.deep-ordinal{display:block;width:100vw;max-width:100vw;box-sizing:border-box;margin-left:50%;transform:translateX(-50%);padding:15em .4rem 1em;overflow:visible;text-align:center}
-.ordinal-multitower{display:flex;width:100%;min-width:0;box-sizing:border-box;align-items:flex-end;justify-content:space-between;padding:0 .25rem}
-.ordinal-tower-block{flex:0 1 auto;min-width:0;margin-right:-.055em;font-size:clamp(.25rem,.68vw,.76rem);letter-spacing:-.045em;white-space:nowrap}
-@media (max-width:700px){.deep-ordinal{padding-top:12em}.ordinal-tower-block{font-size:clamp(.17rem,1.05vw,.42rem);margin-right:-.1em}}
