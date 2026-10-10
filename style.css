@@ -3,3 +3,5 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .ordinal-expression{display:inline-block;max-width:100%;line-height:1.35;letter-spacing:.02em;text-align:center}
 .layers-squared{margin:20px auto;padding:14px;max-width:520px;border:1px solid #555;border-radius:4px;color:#e6d9ff}.layers-squared h2{margin:0 0 10px;font-size:16px;color:#c9adff}.layers-squared p{margin:6px 0}
 .layers-squared-notation{font-size:2em;min-height:42px}.layers-squared-number{font-size:1.5em;margin:6px 0 12px}
+
+.tower-ordinal{display:inline-block;max-width:100%;line-height:1.25;letter-spacing:.035em;color:#4ef7e6;text-shadow:0 0 7px #20cfc1,0 0 18px #1c8fda;font-weight:700;font-size:1.12em;word-spacing:.08em}
