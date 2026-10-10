@@ -25,3 +25,16 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .simulator-panel p{margin:10px 0;overflow-wrap:anywhere}
 .simulator-return{position:absolute;z-index:2;top:14px;left:14px;background:#111}
 @media(max-width:600px){.simulator-panel{width:94%;padding:18px 12px}.simulator-return{top:8px;left:8px}}
+
+.money-milestones-upgrade{margin-top:18px;padding-top:14px;border-top:1px solid #555}
+.money-milestone-summary{font-size:.9em;color:#ddd}
+.money-milestone-panel[hidden]{display:none}
+.money-milestone-panel{margin:12px auto 0;text-align:left}
+.money-milestone-panel h3{margin:0 0 8px;color:#ff7377;text-align:center;font-size:1em}
+.money-milestone-list{max-height:220px;overflow-y:auto;overscroll-behavior:contain;border:1px solid #555;background:#101010}
+.money-milestone{display:grid;grid-template-columns:minmax(80px,1fr) minmax(120px,1.3fr);gap:3px 10px;padding:9px 10px;border-bottom:1px solid #333;color:#aaa}
+.money-milestone:last-child{border-bottom:0}
+.money-milestone.reached{background:#10241b;color:#d7ffe3}
+.money-milestone-name{font-weight:bold;color:#ff888b}
+.money-milestone-status{text-align:right}
+.money-milestone-effect{grid-column:1/-1;font-size:.86em;line-height:1.35}
