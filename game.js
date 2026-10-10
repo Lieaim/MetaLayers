@@ -42,8 +42,15 @@ const SYMBOLIC_STAGES=[
  {id:'10A',name:'Hexation Crucible',at:900},{id:'10B',name:'Heptation Furnace',at:1500},{id:'10C',name:'Octation Vault',at:2500},{id:'10D',name:'Enneation Storm',at:4200},{id:'10E',name:'Decation Citadel',at:7100},{id:'10F',name:'Undecation Spiral',at:12000},{id:'10G',name:'Dodecation Crown',at:20000},
  {id:'11A',name:'Transfinite Forge',at:35000},{id:'11B',name:'Aleph Engine',at:62000},{id:'11C',name:'Omega Lattice',at:110000},{id:'11D',name:'Epsilon Collapse',at:200000},
  {id:'12A',name:'Veblen Sea',at:370000},{id:'12B',name:'Bachmann Horizon',at:700000},{id:'12C',name:'Large Countable Frontier',at:1350000},
- {id:'13A',name:'Cardinal Anvil',at:2700000},{id:'13B',name:'Inaccessible Ascent',at:5500000},{id:'13C',name:'Mahlo Tempest',at:11000000},{id:'13D',name:'Weakly Compact Expanse',at:23000000},{id:'13E',name:'Measurable Zenith',at:48000000},{id:'13F',name:'Ultimate Arrow Crown',at:100000000}
+ {id:'13A',name:'Cardinal Anvil',at:2700000},{id:'13B',name:'Inaccessible Ascent',at:5500000},{id:'13C',name:'Mahlo Tempest',at:11000000},{id:'13D',name:'Weakly Compact Expanse',at:23000000},{id:'13E',name:'Measurable Zenith',at:48000000},{id:'13F',name:'Ultimate Arrow Crown',at:100000000},
+ {id:'14A',name:'Ordinal Event Horizon',at:210000000},{id:'14B',name:'Uncountable Furnace',at:440000000},{id:'14C',name:'Beyond the Aleph Sea',at:920000000},
+ {id:'15A',name:'Mahlo Engine',at:1930000000},{id:'15B',name:'Reflection Cascade',at:4050000000},{id:'15C',name:'Stationary Set Storm',at:8500000000},{id:'15D',name:'Supercompact Ascension',at:17800000000},{id:'15E',name:'Huge Cardinal Expanse',at:37400000000},{id:'15F',name:'I0 Boundary',at:78500000000},{id:'15G',name:'Ultimate Reflection',at:164800000000},
+ {id:'16A',name:'Rank-into-Rank Crucible',at:346000000000},{id:'16B',name:'Embedding Labyrinth',at:727000000000},{id:'16C',name:'Transcendent Hierarchy',at:1527000000000},
+ {id:'17A',name:'Absolute Infinity Threshold',at:3206000000000},{id:'17B',name:'Omega Beyond Omega',at:6735000000000}
 ];
+const BASE_STAGE_REQUIREMENTS=SYMBOLIC_STAGES.map(candidate=>candidate.at);
+const REQUIREMENT_SHIFT_START=SYMBOLIC_STAGES.findIndex(candidate=>candidate.id==='11A');
+for(let i=REQUIREMENT_SHIFT_START;i<SYMBOLIC_STAGES.length;i++)SYMBOLIC_STAGES[i].at=Math.max(SYMBOLIC_STAGES[i-1].at,BASE_STAGE_REQUIREMENTS[i-3]);
 function symbolicStageInfo(order){let info=SYMBOLIC_STAGES[0];for(const candidate of SYMBOLIC_STAGES){if(order>=candidate.at)info=candidate;else break;}return info;}
 function symbolicArrowStage(order){const info=symbolicStageInfo(order);return info.id+' - '+info.name;}
 function currentStageIndex(){return a>=PROGRESS_MAX?symbolicStageInfo(hyperArrowOrder).at===0?1:SYMBOLIC_STAGES.indexOf(symbolicStageInfo(hyperArrowOrder))+1:0;}
