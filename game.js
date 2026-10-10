@@ -283,7 +283,7 @@ function moneyGenerationMilestoneBoost(){return moneyMilestoneCompoundBoost()*(m
 function multiplierGainMilestoneBoost(){return moneyMilestoneCompoundBoost()*rebirthMultiplierGainBoost()*(rebirthMilestones[2]?5:1);}
 function layersCubedLayer(){return layersCubedArrowOrder>0?MAX+layersCubedArrowOrder*1e12:displayedLayerValue(layersCubedProgress);}
 function layersCubedCashBoost(){return layersCubedUnlocked?Math.log2(Math.max(1,layersCubedLayer()))+1:1;}
-function layersCubedTotalSpeedBoost(){const rebirthBoost=rebirthMilestones[1]?1+rebirthCount*0.1:1;const total=totalSpeed(layersCubedLayer())*rebirthBoost*layersCubedStageSpeedBoost()*pointSpeedBoost()**0.5;return Number.isFinite(total)?applyMoneyMilestoneSpeedPower(total):Number.MAX_VALUE;}
+function layersCubedTotalSpeedBoost(){const rebirthBoost=rebirthMilestones[1]?1+rebirthCount*0.1:1;return rebirthBoost*layersCubedStageSpeedBoost();}
 function extremeSymbolicMilestoneBoost(){return moneyMilestoneCount()>=4?2**(moneyMilestoneCount()-3):1;}
 function layersSquaredMilestoneBoost(){const count=moneyMilestoneCount();return count>=5?count**2:1;}
 function normalMoneyBoost(){const moneyBoost=moneyMilestones[0]?layersSquaredMoneyBoost():1,count=moneyMilestoneCount();return moneyBoost*(count>=6?count**3:1);}
