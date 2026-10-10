@@ -180,7 +180,7 @@ function layersSquaredSpeedBoost(){return !layersSquaredUnlocked?1:softcapLayerB
 // Self speed stays exactly half the normal effect, so its matching softcap begins at ×50.
 const layersSquaredSelfSpeedBoost = () => Math.max(1,layersSquaredSpeedBoost()/2);
 const layersSquaredSpeedUpgradeBoost = () => Math.sqrt(speedLevel+1);
-function layersSquaredTenTenExponent(){const numericExponent=Math.max(0,Math.floor((layersSquaredProgress-200000)/500000));return numericExponent+Math.max(0,Math.floor(layersSquaredArrowOrder));}
+function layersSquaredTenTenExponent(){const numericExponent=Math.max(0,Math.floor((layersSquaredProgress-200000)/500000));const symbolicExponent=Math.max(0,Math.floor(layersSquaredArrowOrder*1e12));return numericExponent+symbolicExponent;}
 function speedAutobuyerRate(){return speedAutobuyerUnlocked?1+Math.max(0,layersSquaredTenTenExponent()-4):0;}
 function addLogAmounts(left,right){if(left===null)return right;if(right===null)return left;const high=Math.max(left,right),low=Math.min(left,right);return high-low>20?high:high+Math.log10(1+10**(low-high));}
 function simulatorUnlocked(){return hyperArrowOrder>=SIMULATOR_ARROW_UNLOCK;}
