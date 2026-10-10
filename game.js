@@ -50,7 +50,7 @@ const SYMBOLIC_STAGES=[
 ];
 const BASE_STAGE_REQUIREMENTS=SYMBOLIC_STAGES.map(candidate=>candidate.at);
 const REQUIREMENT_SHIFT_START=SYMBOLIC_STAGES.findIndex(candidate=>candidate.id==='11A');
-for(let i=REQUIREMENT_SHIFT_START;i<SYMBOLIC_STAGES.length;i++)SYMBOLIC_STAGES[i].at=Math.max(SYMBOLIC_STAGES[i-1].at,BASE_STAGE_REQUIREMENTS[i-3]);
+for(let i=REQUIREMENT_SHIFT_START;i<SYMBOLIC_STAGES.length;i++)SYMBOLIC_STAGES[i].at=Math.max(SYMBOLIC_STAGES[i-1].at*1.1,BASE_STAGE_REQUIREMENTS[i-3]);
 function symbolicStageInfo(order){let info=SYMBOLIC_STAGES[0];for(const candidate of SYMBOLIC_STAGES){if(order>=candidate.at)info=candidate;else break;}return info;}
 function symbolicArrowStage(order){const info=symbolicStageInfo(order);return info.id+' - '+info.name;}
 function currentStageIndex(){return a>=PROGRESS_MAX?symbolicStageInfo(hyperArrowOrder).at===0?1:SYMBOLIC_STAGES.indexOf(symbolicStageInfo(hyperArrowOrder))+1:0;}
