@@ -86,4 +86,4 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .ultra-rebirth-area{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;height:min(88vh,850px);min-height:500px;margin-top:0;overflow:hidden;border:8px solid #0753c5;background:#001342}
 .ultra-rebirth-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
 .ultra-rebirth-panel{z-index:1;box-sizing:border-box;width:min(86%,560px);padding:24px 18px;border:3px solid #69d5ff;background:rgba(0,6,28,.9);color:#e4f5ff;box-shadow:0 8px 28px #001b7a}
-.ultra-rebirth-panel h2{margin:0 0 16px;color:#85e8ff}
+.ultra-rebirth-panel h2{margin:0 0 16px;color:#85e8ff}.rebirth-power-upgrade{margin-top:18px;padding-top:12px;border-top:1px solid #3578a8}.rebirth-power-upgrade h3{margin:4px 0 8px;color:#85e8ff;font-size:16px}.rebirth-power-upgrade h4{color:#a6eaff}.rebirth-power-milestones .money-milestone-list{max-height:220px}
