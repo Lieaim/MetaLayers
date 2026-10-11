@@ -194,8 +194,8 @@ function simulatorUnlocked(){return hyperArrowOrder>=SIMULATOR_ARROW_UNLOCK;}
 function gradualLogSoftcap(value,start){if(value<=start)return value;const excess=value-start;return start+excess/(1+Math.log10(1+excess)/10);}
 function layersSquaredMoneyBoostLog10(){return moneyLog===null?0:gradualLogSoftcap(moneyLog*moneyBoostExponent(),50);}
 function layersSquaredMoneyBoost(){return 10**Math.min(308,layersSquaredMoneyBoostLog10());}
-function multiplierTradeSoftcapExponent(referenceLog=null){const references=[multiplierLog,referenceLog].filter(value=>value!==null&&Number.isFinite(value));if(!references.length)return moneyToMultiplierExponent();const softcapReferenceLog=Math.max(...references);if(softcapReferenceLog<=100)return moneyToMultiplierExponent();const softcapFactor=10**(((softcapReferenceLog-100)/50)*Math.log10(0.75));return moneyToMultiplierExponent()*softcapFactor;}
-function multiplierTradeGainLog(){if(moneyLog===null)return null;const boostLog=Math.log10(multiplierGainMilestoneBoost()),rawGainLog=moneyLog*moneyToMultiplierExponent()+boostLog,projectedMultiplierLog=addLogAmounts(multiplierLog,rawGainLog);return moneyLog*multiplierTradeSoftcapExponent(projectedMultiplierLog)+boostLog;}
+function multiplierTradeSoftcapExponent(){if(moneyLog===null||moneyLog<=115)return moneyToMultiplierExponent();const softcapFactor=10**(((moneyLog-115)/50)*Math.log10(0.75));return moneyToMultiplierExponent()*softcapFactor;}
+function multiplierTradeGainLog(){if(moneyLog===null)return null;return moneyLog*multiplierTradeSoftcapExponent()+Math.log10(multiplierGainMilestoneBoost());}
 function rebirthTimesSpeedBoost(){return rebirthMilestones[11]?Math.max(1,rebirthTimes):1;}
 function layersSquaredTotalSpeedLog10(){return (Math.log10(layersSquaredSelfSpeedBoost())+Math.log10(layersSquaredSpeedUpgradeBoost())+layersSquaredMoneyBoostLog10()+Math.log10(layersSquaredMilestoneBoost())+Math.log10(rebirthStageSpeedBoost())+Math.log10(rebirthTimesSpeedBoost()))*moneyMilestoneSpeedExponent()+(rebirthMilestones[17]?10:0);}
 function layersSquaredTotalSpeedBoost(){const log=layersSquaredTotalSpeedLog10();return log>308?Number.MAX_VALUE:10**log;}
