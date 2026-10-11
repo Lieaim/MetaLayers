@@ -63,7 +63,7 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .crazy-separator{color:#67e9ff;text-shadow:0 0 8px #00c9ff}
 .crazy-bracket{color:#bcff00;text-shadow:0 0 9px #ceff00;font-size:1.1em;font-weight:bold}
 
-/* Keep Button Simulator and Rebirth as a vertical, down-scroll progression. */
+/* Keep Button Simulator, Rebirth, and Ultra Rebirths in a vertical, down-scroll progression. */
 .simulator-open #button-simulator-area{display:flex;flex-direction:column;align-items:stretch;gap:24px}
 .simulator-room,.rebirth-area{flex:0 0 auto;width:100%}
 .simulator-room{margin:0}
@@ -81,3 +81,9 @@ button:disabled{cursor:not-allowed;color:#888;background:#101010;border-color:#3
 .test-reset{display:block;margin:10px auto 0;border-color:#9b7350;color:#ffcfad;font-size:.9em}.test-reset:hover{border-color:#ffb76d;background:#24170f}
 
 .ordinal-system{box-sizing:border-box;margin:18px auto;padding:14px;max-width:720px;border:1px solid #3c7788;border-radius:6px;background:#061015;color:#e6faff}.ordinal-system h2{margin:0 0 10px;color:#65eaff;font-size:17px}.ordinal-system p{margin:7px 0}.ordinal-system-actions{display:flex;justify-content:center;gap:8px;margin:10px}.ordinal-system-note{color:#9db6bb;font-size:11px;line-height:1.5;max-width:660px;margin:12px auto!important}.ordinal-system #layer-ordinal-current{color:#42fff2;font-size:1.2em;overflow-wrap:anywhere}
+
+#ultra-rebirth-area[hidden]{display:none}
+.ultra-rebirth-area{position:relative;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:100%;height:min(88vh,850px);min-height:500px;margin-top:0;overflow:hidden;border:8px solid #0753c5;background:#001342}
+.ultra-rebirth-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.ultra-rebirth-panel{z-index:1;box-sizing:border-box;width:min(86%,560px);padding:24px 18px;border:3px solid #69d5ff;background:rgba(0,6,28,.9);color:#e4f5ff;box-shadow:0 8px 28px #001b7a}
+.ultra-rebirth-panel h2{margin:0 0 16px;color:#85e8ff}
