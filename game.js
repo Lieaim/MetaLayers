@@ -302,8 +302,14 @@ function ultraRebirthGainAmount(){if(!rebirthPowerBoostsUnlocked||rebirthPower<1
 function layersCubedPowerBoostActive(){return rebirthPowerBoostsUnlocked&&rebirthPower>=250000;}
 function moneyGenerationMilestoneBoost(){return moneyMilestoneCompoundBoost()*(moneyMilestones[2]?1+currentStageIndex():1)*(rebirthMilestones[2]?5:1)*(rebirthMilestones[9]?2.5:1)*(rebirthMilestones[6]?Math.sqrt(rebirthMultiplierGainBoost()):1)*rebirthPowerCashMultiplier();}
 function multiplierGainMilestoneBoost(){const layersCubedBoost=layersCubedPowerBoostActive()?layersCubedCashBoost():1;return moneyMilestoneCompoundBoost()*rebirthMultiplierGainBoost()*(rebirthMilestones[2]?5:1)*(rebirthMilestones[9]?2.5:1)*rebirthPowerCashMultiplier()*layersCubedBoost;}
-function layersCubedBaseExponent(){return layersCubedArrowOrder>0?Math.max(1,Math.floor(layersCubedArrowOrder)):Math.max(1,displayedLayerValue(layersCubedProgress));}
-function layersCubedCashBoost(){if(!layersCubedUnlocked)return 1;const baseBoost=Math.log2(layersCubedBaseExponent())+1;return rebirthPowerBoostsUnlocked&&rebirthPower>=500000?baseBoost**1.25:baseBoost;}
+function layersCubedRawBoost(){
+ const layer=displayedLayerValue(layersCubedProgress),numericBoost=Math.log2(layer)+1;
+ if(layersCubedArrowOrder>0)return Math.log2(MAX)+1+(PROGRESS_MAX-1200000)/100000+layersCubedArrowOrder*1e12;
+ if(layer<MAX)return numericBoost;
+ // Continue from the ordinary Layers³ progress counter after its notation turns symbolic.
+ return Math.log2(MAX)+1+(layersCubedProgress-1200000)/100000;
+}
+function layersCubedCashBoost(){if(!layersCubedUnlocked)return 1;const baseBoost=layersCubedRawBoost();return rebirthPowerBoostsUnlocked&&rebirthPower>=500000?baseBoost**1.25:baseBoost;}
 function layersCubedTotalSpeedBoost(){const rebirthBoost=rebirthMilestones[1]?1+rebirthCount*0.1:1,rebirthPowerBoost=rebirthPowerBoostsUnlocked&&rebirthPower>=5000?Math.log10(rebirthPower):1;return rebirthBoost*rebirthPowerBoost*layersCubedStageSpeedBoost();}
 function extremeSymbolicMilestoneBoost(){return moneyMilestoneCount()>=4?2**(moneyMilestoneCount()-3):1;}
 function layersSquaredMilestoneBoost(){const count=moneyMilestoneCount();return count>=5?count**2:1;}
