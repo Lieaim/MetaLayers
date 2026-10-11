@@ -194,7 +194,7 @@ function simulatorUnlocked(){return hyperArrowOrder>=SIMULATOR_ARROW_UNLOCK;}
 function gradualLogSoftcap(value,start){if(value<=start)return value;const excess=value-start;return start+excess/(1+Math.log10(1+excess)/10);}
 function layersSquaredMoneyBoostLog10(){return moneyLog===null?0:gradualLogSoftcap(moneyLog*moneyBoostExponent(),50);}
 function layersSquaredMoneyBoost(){return 10**Math.min(308,layersSquaredMoneyBoostLog10());}
-function moneyGainSoftcapExponentLog10(){return moneyLog===null||moneyLog<=100?0:((moneyLog-100)/50)*Math.log10(0.75);}
+function moneyGainSoftcapExponentLog10(){const referenceLog=moneyLog===null?moneyBestLog:moneyBestLog===null?moneyLog:Math.max(moneyLog,moneyBestLog);return referenceLog===null||referenceLog<=100?0:((referenceLog-100)/50)*Math.log10(0.75);}
 function moneyGainSoftcapExponent(){const logExponent=moneyGainSoftcapExponentLog10();return logExponent<-308?0:10**logExponent;}
 function rebirthTimesSpeedBoost(){return rebirthMilestones[11]?Math.max(1,rebirthTimes):1;}
 function layersSquaredTotalSpeedLog10(){return (Math.log10(layersSquaredSelfSpeedBoost())+Math.log10(layersSquaredSpeedUpgradeBoost())+layersSquaredMoneyBoostLog10()+Math.log10(layersSquaredMilestoneBoost())+Math.log10(rebirthStageSpeedBoost())+Math.log10(rebirthTimesSpeedBoost()))*moneyMilestoneSpeedExponent()+(rebirthMilestones[17]?10:0);}
