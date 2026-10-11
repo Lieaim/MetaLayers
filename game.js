@@ -194,8 +194,8 @@ function simulatorUnlocked(){return hyperArrowOrder>=SIMULATOR_ARROW_UNLOCK;}
 function gradualLogSoftcap(value,start){if(value<=start)return value;const excess=value-start;return start+excess/(1+Math.log10(1+excess)/10);}
 function layersSquaredMoneyBoostLog10(){return moneyLog===null?0:gradualLogSoftcap(moneyLog*moneyBoostExponent(),50);}
 function layersSquaredMoneyBoost(){return 10**Math.min(308,layersSquaredMoneyBoostLog10());}
-function moneyGainSoftcapExponentLog10(){const referenceLog=moneyLog===null?moneyBestLog:moneyBestLog===null?moneyLog:Math.max(moneyLog,moneyBestLog);return referenceLog===null||referenceLog<=100?0:((referenceLog-100)/50)*Math.log10(0.75);}
-function moneyGainSoftcapExponent(){const logExponent=moneyGainSoftcapExponentLog10();return logExponent<-308?0:10**logExponent;}
+function moneyGainSoftcapExponentLog10(referenceLog=null){const references=[moneyLog,moneyBestLog,referenceLog].filter(value=>value!==null&&Number.isFinite(value));if(!references.length)return 0;const highestReferenceLog=Math.max(...references);return highestReferenceLog<=100?0:((highestReferenceLog-100)/50)*Math.log10(0.75);}
+function moneyGainSoftcapExponent(referenceLog=null){const logExponent=moneyGainSoftcapExponentLog10(referenceLog);return logExponent<-308?0:10**logExponent;}
 function rebirthTimesSpeedBoost(){return rebirthMilestones[11]?Math.max(1,rebirthTimes):1;}
 function layersSquaredTotalSpeedLog10(){return (Math.log10(layersSquaredSelfSpeedBoost())+Math.log10(layersSquaredSpeedUpgradeBoost())+layersSquaredMoneyBoostLog10()+Math.log10(layersSquaredMilestoneBoost())+Math.log10(rebirthStageSpeedBoost())+Math.log10(rebirthTimesSpeedBoost()))*moneyMilestoneSpeedExponent()+(rebirthMilestones[17]?10:0);}
 function layersSquaredTotalSpeedBoost(){const log=layersSquaredTotalSpeedLog10();return log>308?Number.MAX_VALUE:10**log;}
@@ -430,7 +430,7 @@ function advance(now){
   }
  }
  if(ultraRebirthCount>0){const powerRate=(ultraRebirthCount+1)*rebirthPowerSelfBoost();rebirthPower=Math.min(Number.MAX_VALUE,rebirthPower+dt*powerRate);}checkAdvancedMilestoneUnlocks();
- if(simulatorUnlocked()){const moneyGainBoostLog=(multiplierLog===null?0:multiplierLog*multiplierToMoneyExponent())+Math.log10(moneyGenerationMilestoneBoost())+Math.log10(layersCubedCashBoost()),moneyGainLog=Math.log10(Math.max(dt,1e-12))+moneyGainBoostLog*moneyGainSoftcapExponent();moneyLog=addLogAmounts(moneyLog,moneyGainLog);moneyBestLog=moneyBestLog===null?moneyLog:Math.max(moneyBestLog,moneyLog);checkMoneyMilestones();}
+ if(simulatorUnlocked()){const moneyGainBoostLog=(multiplierLog===null?0:multiplierLog*multiplierToMoneyExponent())+Math.log10(moneyGenerationMilestoneBoost())+Math.log10(layersCubedCashBoost()),rawMoneyGainLog=Math.log10(Math.max(dt,1e-12))+moneyGainBoostLog,projectedMoneyLog=addLogAmounts(moneyLog,rawMoneyGainLog),moneyGainLog=rawMoneyGainLog*moneyGainSoftcapExponent(projectedMoneyLog);moneyLog=addLogAmounts(moneyLog,moneyGainLog);moneyBestLog=moneyBestLog===null?moneyLog:Math.max(moneyBestLog,moneyLog);checkMoneyMilestones();}
  if(speedAutobuyerUnlocked){autobuyerElapsed+=dt*speedAutobuyerRate();const levels=Math.floor(autobuyerElapsed);if(levels){speedLevel+=levels;autobuyerElapsed-=levels;}}
 }
 function Click(){advance(performance.now());running=!running;render();save();}
