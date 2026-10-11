@@ -289,7 +289,7 @@ function moneyToMultiplierExponent(){return moneyMilestones[7]?0.8:0.75;}
 function moneyMilestoneSpeedExponent(){return (moneyMilestones[8]?1.025:1)*(moneyMilestones[9]?1.025:1);}
 function applyMoneyMilestoneSpeedPower(speed){const powered=speed**moneyMilestoneSpeedExponent();return Number.isFinite(powered)?powered:Number.MAX_VALUE;}
 function moneyMilestoneCompoundBoost(){return 2**Math.max(0,moneyMilestoneCount()-2);}
-function rebirthMultiplierGainBoost(){const base=rebirthMilestones[5]?(rebirthCount+1)**2:rebirthCount+1;return rebirthMilestones[13]?base**1.25:base;}
+function rebirthMultiplierGainBoost(){const base=rebirthMilestones[5]?(rebirthCount+1)**2:rebirthCount+1,rebirthMilestoneBoost=rebirthMilestones[13]?base**1.25:base;return rebirthPowerMilestoneReached(11)?rebirthMilestoneBoost**1.25:rebirthMilestoneBoost;}
 function rebirthGainMultiplier(){const milestoneBoost=(moneyMilestones[11]?2:1)*(moneyMilestones[12]?10:1),rebirthMilestoneBoost=rebirthMilestones[8]?Math.sqrt(Math.max(1,rebirthMilestoneCount())):1,multiplierOrderBoost=rebirthMilestones[12]&&multiplierLog!==null?1.25**Math.max(0,multiplierLog-20):1,rebirthPowerBoost=rebirthPowerGainBoost();const result=milestoneBoost*rebirthMilestoneBoost*multiplierOrderBoost*rebirthPowerBoost;return Number.isFinite(result)?result:Number.MAX_VALUE;}
 function rebirthGainAmount(){return Math.max(1,Math.floor(rebirthGainMultiplier()));}
 function rebirthPowerCashMultiplier(){return rebirthPowerBoostsUnlocked&&rebirthPower>=10?Math.log(rebirthPower)/Math.log(rebirthPowerMilestoneReached(13)?1.1:2.5):1;}
@@ -402,7 +402,7 @@ function renderRebirthPowerMilestones(){
   'The Layers³ cash boost is raised to the power 1.25.',
   'Unlocks Money Milestones 13–15 and Rebirth Milestones 16–20.',
   'The Rebirth-to-Ultra-Rebirth logarithm base is reduced from 8.5 to 7.',
-  'Cash gain is multiplied by (total Ultra Rebirths × current Ultra Rebirths).',
+  'Cash gain is multiplied by (total Ultra Rebirths × current Ultra Rebirths); the Rebirth-to-multiplier boost is raised to ^1.25.',
   'The extreme symbolic speed logarithm changes from log₁₀ to log₉.₅.',
   'The first Rebirth Power logarithm base is reduced from 2.5 to 1.1.',
   'Unlocks the Mega Money placeholder.'
