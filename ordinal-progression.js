@@ -24,9 +24,9 @@
     return REQUIREMENT_START + REQUIREMENT_STEP * count;
   }
   function formatInteger(value) { return BigInt(value).toLocaleString('en-US'); }
-  function requirementText(successorCount) { return 'Hψ[Ω' + formatInteger(requirementIndex(successorCount)) + ']'; }
+  function requirementText(successorCount) { return 'Hψ[Ω' + formatInteger(requirementIndex(successorCount)) + '+Γω]'; }
   function requirementHTML(successorCount) {
-    return 'H<sub>ψ[Ω' + formatInteger(requirementIndex(successorCount)) + ']</sub>';
+    return 'H<sub>ψ[Ω' + formatInteger(requirementIndex(successorCount)) + '+Γω]</sub>';
   }
   function hasRequiredLayer(orderUnits, successorCount) {
     const units = BigInt(orderUnits);
