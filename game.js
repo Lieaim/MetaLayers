@@ -356,7 +356,7 @@ function buySpeedAutobuyer(){
 function rebirth(){
  advance(performance.now());
  if(!rebirthsUnlocked||!moneyMilestones[9])return;
- if(!confirm('Rebirth resets Money, Multiplier, and all Money Milestones. Layers and Layers² are preserved. Continue?'))return;
+ if(rebirthCount<=10&&!confirm('Rebirth resets Money, Multiplier, and all Money Milestones. Layers and Layers² are preserved. Continue?'))return;
  const gain=rebirthGainAmount();rebirthCount+=gain;rebirthTimes++;checkRebirthMilestones();moneyLog=rebirthMilestones[10]?4:null;multiplierLog=null;moneyBestLog=moneyLog;moneyMilestonesUnlocked=rebirthMilestones[10];moneyMilestones=Array(12).fill(false);checkRebirthMilestones();checkMoneyMilestones();last=performance.now();render();save();
  document.getElementById('notice').textContent='Rebirth complete: +'+gain.toLocaleString('en-US')+' Rebirths. Money, multiplier, and Money Milestones reset; Layers and Layers² were preserved.';
 }
