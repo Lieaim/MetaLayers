@@ -298,7 +298,7 @@ function rebirthGainMultiplier(){const milestoneBoost=moneyMilestones[11]?2:1,re
 function rebirthGainAmount(){return Math.max(1,Math.floor(rebirthGainMultiplier()));}
 function rebirthPowerCashMultiplier(){return rebirthPowerBoostsUnlocked&&rebirthPower>=10?Math.log(rebirthPower)/Math.log(2.5):1;}
 function rebirthPowerGainBoost(){return rebirthPowerBoostsUnlocked&&rebirthPower>=50?Math.log(rebirthPower)/Math.log(5):1;}
-function rebirthPowerSelfBoost(){if(!rebirthPowerBoostsUnlocked||rebirthPower<250000)return 1;const base=rebirthPower>=50000?1.5:2;return Math.max(1,Math.log(rebirthPower)/Math.log(base));}
+function rebirthPowerSelfBoost(){if(!rebirthPowerBoostsUnlocked||rebirthPower<250)return 1;const base=rebirthPower>=50000?1.5:2;return Math.max(1,Math.log(rebirthPower)/Math.log(base));}
 function ultraRebirthGainAmount(){if(!rebirthPowerBoostsUnlocked||rebirthPower<1000)return 1;const base=rebirthPower>=100000?8.5:10;return 1+Math.floor(Math.log(Math.max(1,rebirthCount))/Math.log(base));}
 function layersCubedPowerBoostActive(){return rebirthPowerBoostsUnlocked&&rebirthPower>=250000;}
 function moneyGenerationMilestoneBoost(){return moneyMilestoneCompoundBoost()*(moneyMilestones[2]?1+currentStageIndex():1)*(rebirthMilestones[2]?5:1)*(rebirthMilestones[9]?2.5:1)*(rebirthMilestones[6]?Math.sqrt(rebirthMultiplierGainBoost()):1)*rebirthPowerCashMultiplier();}
